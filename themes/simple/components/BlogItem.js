@@ -1,7 +1,6 @@
 import LazyImage from '@/components/LazyImage'
 import NotionIcon from '@/components/NotionIcon'
 import NotionPage from '@/components/NotionPage'
-import TwikooCommentCount from '@/components/TwikooCommentCount'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { formatDateFmt } from '@/lib/utils/formatDate'
@@ -18,24 +17,24 @@ export const BlogItem = props => {
   return (
     <div
       key={post.id}
-      className='h-full rounded-2xl border border-gray-200/70 dark:border-gray-800 bg-white dark:bg-black/60 shadow-[0_1px_8px_rgba(17,24,39,0.06)] hover:shadow-[0_6px_18px_rgba(17,24,39,0.12)] transition-shadow duration-200'>
+      className='h-full rounded-2xl border border-stone-200/80 dark:border-gray-800 bg-white/95 dark:bg-black/60 shadow-[0_1px_6px_rgba(28,25,23,0.06)] hover:shadow-[0_8px_24px_rgba(28,25,23,0.10)] transition-shadow duration-300'>
       {/* 封面图 */}
       {showPageCover && (
         <SmartLink href={post.href} passHref legacyBehavior>
           <div className='overflow-hidden rounded-t-2xl'>
             <LazyImage
               src={post?.pageCoverThumbnail}
-              className='w-full h-52 object-cover object-center hover:scale-[1.02] duration-500'
+              className='w-full aspect-[16/9] object-cover object-center hover:scale-[1.015] duration-500'
             />
           </div>
         </SmartLink>
       )}
 
-      <article className='p-6'>
-        <h2 className='mb-3'>
+      <article className='p-7 md:p-8'>
+        <h2 className='mb-4'>
           <SmartLink
             href={post.href}
-            className='blog-item-title text-gray-900 dark:text-white text-2xl md:text-3xl leading-tight'>
+            className='blog-item-title text-gray-900 dark:text-white text-[1.9rem] md:text-[2.2rem] leading-tight'>
             {siteConfig('POST_TITLE_ICON') && (
               <NotionIcon icon={post.pageIcon} />
             )}
@@ -44,7 +43,7 @@ export const BlogItem = props => {
         </h2>
 
         {/* 文章信息 */}
-        <header className='mb-4 text-xs md:text-sm text-gray-600 dark:text-gray-300 flex flex-wrap items-center gap-x-3 gap-y-1'>
+        <header className='mb-5 text-xs md:text-sm text-gray-500 dark:text-gray-300 flex flex-wrap items-center gap-x-3 gap-y-2'>
           <span className='inline-flex items-center gap-1'>
             <i className='fa-regular fa-user'></i>
             {siteConfig('AUTHOR')}
@@ -55,16 +54,17 @@ export const BlogItem = props => {
             <i className='fa-regular fa-clock' />
             {post.date?.start_date || post.createdTime}
           </SmartLink>
-          <TwikooCommentCount post={post} />
           {post.category && (
-            <SmartLink href={`/category/${post.category}`} className='inline-flex items-center gap-1'>
+            <SmartLink
+              href={`/category/${post.category}`}
+              className='inline-flex items-center gap-1'>
               <i className='fa-regular fa-folder' />
               {post.category}
             </SmartLink>
           )}
         </header>
 
-        <main className='text-gray-700 dark:text-gray-300 leading-relaxed mb-6 text-[0.95rem]'>
+        <main className='text-stone-600 dark:text-gray-300 leading-[1.9] mb-7 text-base'>
           {!showPreview && (
             <>
               {post.summary}
@@ -82,8 +82,8 @@ export const BlogItem = props => {
         <div className='pt-2'>
           <SmartLink
             href={post.href}
-            className='inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-200'>
-            Continue Reading
+            className='inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-stone-500 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-200'>
+            Read More
             <i className='fa-solid fa-angle-right align-middle'></i>
           </SmartLink>
         </div>

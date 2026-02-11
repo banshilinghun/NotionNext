@@ -158,47 +158,29 @@ const LayoutIndex = props => {
  * @returns
  */
 const LayoutPostList = props => {
-  const { categoryOptions, category } = props
-  const topCategories = (categoryOptions || []).slice(0, 8)
+  const { category, tag } = props
 
   return (
-    <div className='w-full'>
-      <div className='grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-10'>
-        <aside className='hidden lg:block'>
-          <div className='sticky top-28 border-r border-gray-200/70 pr-8'>
-            <h2 className='font-serif text-5xl leading-[0.95] text-gray-900 mb-3'>
-              Tools
-              <br />
-              <span className='italic font-light'>& Craft</span>
-            </h2>
-            <p className='text-sm text-gray-500 leading-relaxed mb-5'>
-              {siteConfig('DESCRIPTION')}
-            </p>
-            <div className='border-t border-gray-200/80 pt-5'>
-              <div className='text-sm font-semibold text-gray-800 mb-3'>最新栏目</div>
-              <div className='space-y-2'>
-                {topCategories.map(item => (
-                  <SmartLink
-                    key={item.name}
-                    href={`/category/${item.name}`}
-                    className={`block text-sm transition-colors duration-150 ${category === item.name ? 'text-black font-semibold' : 'text-gray-500 hover:text-gray-900'}`}>
-                    {item.name}
-                  </SmartLink>
-                ))}
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <section>
-          <BlogPostBar {...props} />
-          {siteConfig('POST_LIST_STYLE') === 'page' ? (
-            <BlogListPage {...props} />
-          ) : (
-            <BlogListScroll {...props} />
-          )}
+    <div className='w-full max-w-4xl mx-auto'>
+      {!category && !tag && (
+        <section className='text-center mb-10 md:mb-14 px-4'>
+          <h2 className='text-2xl md:text-3xl text-gray-900 tracking-tight leading-tight'>
+            慢生活记录
+          </h2>
+          <p className='mt-3 text-sm md:text-base text-gray-500 leading-relaxed'>
+            关于日常、家庭、工作与思考的真实片段。
+          </p>
         </section>
-      </div>
+      )}
+
+      <section>
+        <BlogPostBar {...props} />
+        {siteConfig('POST_LIST_STYLE') === 'page' ? (
+          <BlogListPage {...props} />
+        ) : (
+          <BlogListScroll {...props} />
+        )}
+      </section>
     </div>
   )
 }

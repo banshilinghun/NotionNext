@@ -36,10 +36,10 @@ export default function BlogListPage(props) {
     .replace('.html', '')
 
   return (
-    <div className='w-full md:pr-8 mb-12'>
+    <div className='w-full mb-12'>
       <div
         id='posts-wrapper'
-        className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+        className='grid grid-cols-1 gap-10'>
         {posts?.map((p, index) => (
           <Fragment key={p.id}>
             {SIMPLE_POST_AD_ENABLE && (index + 1) % 3 === 0 && (
@@ -59,7 +59,7 @@ export default function BlogListPage(props) {
         ))}
       </div>
 
-      <div className='flex justify-between text-xs mt-1'>
+      <div className='flex justify-between text-xs mt-4'>
         <SmartLink
           href={{
             pathname:
@@ -68,7 +68,7 @@ export default function BlogListPage(props) {
                 : `${pagePrefix}/page/${currentPage - 1}`,
             query: router.query.s ? { s: router.query.s } : {}
           }}
-          className={`${showPrev ? 'text-blue-600 border-b border-blue-400 visible ' : ' invisible bg-gray pointer-events-none '} no-underline pb-1 px-3`}>
+          className={`${showPrev ? 'text-gray-700 border-b border-gray-400 visible ' : ' invisible bg-gray pointer-events-none '} no-underline pb-1 px-3 tracking-wider uppercase`}>
           NEWER POSTS <i className='fa-solid fa-arrow-left'></i>
         </SmartLink>
         <SmartLink
@@ -76,7 +76,7 @@ export default function BlogListPage(props) {
             pathname: `${pagePrefix}/page/${currentPage + 1}`,
             query: router.query.s ? { s: router.query.s } : {}
           }}
-          className={`${showNext ? 'text-blue-600 border-b border-blue-400 visible' : ' invisible bg-gray pointer-events-none '} no-underline pb-1 px-3`}>
+          className={`${showNext ? 'text-gray-700 border-b border-gray-400 visible' : ' invisible bg-gray pointer-events-none '} no-underline pb-1 px-3 tracking-wider uppercase`}>
           OLDER POSTS <i className='fa-solid fa-arrow-right'></i>
         </SmartLink>
       </div>

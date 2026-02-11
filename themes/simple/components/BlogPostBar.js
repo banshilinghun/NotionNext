@@ -11,15 +11,15 @@ export default function BlogPostBar(props) {
 
   if (tag) {
     return (
-      <div className='flex items-center text-2xl md:text-3xl font-serif py-1 mb-6 text-gray-900'>
-        <i className='mr-3 fas fa-tag text-lg' />
+      <div className='flex items-center text-xl md:text-2xl py-1 mb-8 text-gray-900'>
+        <i className='mr-3 fas fa-tag text-base' />
         {locale.COMMON.TAGS}: {tag}
       </div>
     )
   } else if (category) {
     return (
-      <div className='flex items-center text-2xl md:text-3xl font-serif py-1 mb-6 text-gray-900'>
-        <i className='mr-3 fas fa-th text-lg' />
+      <div className='flex items-center text-xl md:text-2xl py-1 mb-8 text-gray-900'>
+        <i className='mr-3 fas fa-th text-base' />
         {locale.COMMON.CATEGORY}: {category}
       </div>
     )

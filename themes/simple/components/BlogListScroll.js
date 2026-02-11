@@ -55,15 +55,16 @@ export default function BlogListScroll(props) {
 
   return (
     <div id='posts-wrapper' className='w-full md:pr-8 mb-12' ref={targetRef}>
-      {postsToShow.map(p => (
-        <BlogItem key={p.id} post={p} />
-      ))}
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+        {postsToShow.map(p => (
+          <BlogItem key={p.id} post={p} />
+        ))}
+      </div>
 
       <div
         onClick={handleGetMore}
-        className='w-full my-4 py-4 text-center cursor-pointer '>
-        {' '}
-        {hasMore ? locale.COMMON.MORE : `${locale.COMMON.NO_MORE} 😰`}{' '}
+        className='w-full my-6 py-4 text-center cursor-pointer text-xs tracking-[0.18em] uppercase text-gray-500 hover:text-gray-900 transition-colors duration-200'>
+        {hasMore ? locale.COMMON.MORE : `${locale.COMMON.NO_MORE}`}
       </div>
     </div>
   )

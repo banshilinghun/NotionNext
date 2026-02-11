@@ -69,6 +69,15 @@ const LayoutBase = props => {
   const { children, slotTop } = props
   const { onLoading, fullWidth } = useGlobal()
   const searchModal = useRef(null)
+  const router = useRouter()
+  const isListLikePage =
+    router.pathname === '/' ||
+    router.pathname === '/search' ||
+    router.pathname.startsWith('/search/') ||
+    router.pathname === '/category' ||
+    router.pathname.startsWith('/category/') ||
+    router.pathname === '/tag' ||
+    router.pathname.startsWith('/tag/')
 
   return (
     <ThemeGlobalSimple.Provider value={{ searchModal }}>
@@ -112,7 +121,7 @@ const LayoutBase = props => {
             <AdSlot type='native' />
           </div>
 
-          {fullWidth ? null : (
+          {fullWidth || isListLikePage ? null : (
             <div
               id='right-sidebar'
               className='hidden xl:block flex-none sticky top-8 w-96 border-l dark:border-gray-800 pl-12 border-gray-200/60'>
@@ -149,15 +158,48 @@ const LayoutIndex = props => {
  * @returns
  */
 const LayoutPostList = props => {
+  const { categoryOptions, category } = props
+  const topCategories = (categoryOptions || []).slice(0, 8)
+
   return (
-    <>
-      <BlogPostBar {...props} />
-      {siteConfig('POST_LIST_STYLE') === 'page' ? (
-        <BlogListPage {...props} />
-      ) : (
-        <BlogListScroll {...props} />
-      )}
-    </>
+    <div className='w-full'>
+      <div className='grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-10'>
+        <aside className='hidden lg:block'>
+          <div className='sticky top-28 border-r border-gray-200/70 pr-8'>
+            <h2 className='font-serif text-5xl leading-[0.95] text-gray-900 mb-3'>
+              Tools
+              <br />
+              <span className='italic font-light'>& Craft</span>
+            </h2>
+            <p className='text-sm text-gray-500 leading-relaxed mb-5'>
+              {siteConfig('DESCRIPTION')}
+            </p>
+            <div className='border-t border-gray-200/80 pt-5'>
+              <div className='text-sm font-semibold text-gray-800 mb-3'>最新栏目</div>
+              <div className='space-y-2'>
+                {topCategories.map(item => (
+                  <SmartLink
+                    key={item.name}
+                    href={`/category/${item.name}`}
+                    className={`block text-sm transition-colors duration-150 ${category === item.name ? 'text-black font-semibold' : 'text-gray-500 hover:text-gray-900'}`}>
+                    {item.name}
+                  </SmartLink>
+                ))}
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <section>
+          <BlogPostBar {...props} />
+          {siteConfig('POST_LIST_STYLE') === 'page' ? (
+            <BlogListPage {...props} />
+          ) : (
+            <BlogListScroll {...props} />
+          )}
+        </section>
+      </div>
+    </div>
   )
 }
 

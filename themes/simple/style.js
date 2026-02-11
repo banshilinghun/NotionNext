@@ -6,10 +6,11 @@
  */
 const Style = () => {
   return <style jsx global>{`
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap');
+  @import url('https://cdn-font.hyperos.mi.com/font/css?family=MiSans_VF:VF:Chinese_Simplify,Latin&display=swap');
+  @import url('https://cdn-font.hyperos.mi.com/font/css?family=MiSans:100,200,300,400,450,500,600,650,700,900:Chinese_Simplify,Latin&display=swap');
 
   #theme-simple {
-    font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+    font-family: 'MiSans VF', 'MiSans', 'PingFang SC', sans-serif;
     --sn-bg-page: #f7f3ec;
     --sn-bg-section: #fbf8f3;
     --sn-bg-card: #fffdf9;
@@ -25,7 +26,7 @@ const Style = () => {
   #theme-simple h2,
   #theme-simple h3,
   #theme-simple .blog-item-title {
-    font-family: 'Noto Serif SC', 'Songti SC', serif;
+    font-family: 'MiSans VF', 'MiSans', 'PingFang SC', sans-serif;
   }
 
   // 底色

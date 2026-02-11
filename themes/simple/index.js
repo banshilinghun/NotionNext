@@ -165,7 +165,9 @@ const LayoutIndex = props => {
  * @returns
  */
 const LayoutPostList = props => {
-  const { category, tag } = props
+  const { category, tag, posts = [], latestPosts = [] } = props
+  const hasPosts = Array.isArray(posts) && posts.length > 0
+  const recentPosts = Array.isArray(latestPosts) ? latestPosts.slice(0, 3) : []
 
   return (
     <div className='w-full max-w-[56rem] mx-auto'>
@@ -182,10 +184,48 @@ const LayoutPostList = props => {
 
       <section>
         <BlogPostBar {...props} />
-        {siteConfig('POST_LIST_STYLE') === 'page' ? (
-          <BlogListPage {...props} />
+        {hasPosts ? (
+          siteConfig('POST_LIST_STYLE') === 'page' ? (
+            <BlogListPage {...props} />
+          ) : (
+            <BlogListScroll {...props} />
+          )
         ) : (
-          <BlogListScroll {...props} />
+          <div className='rounded-2xl border border-[#e3dbcf] bg-[#fffdf9] p-8 md:p-10'>
+            <h3 className='text-xl md:text-2xl text-[#2b241c]'>这里还没有文章</h3>
+            <p className='mt-3 text-sm md:text-base text-[#8a7f73] leading-relaxed max-w-xl mx-auto'>
+              你现在访问的是菜单页或空分类。请确认文章的 `type=Post`、`status=Published`，
+              并且文章的 `category` 与当前栏目一致。
+            </p>
+
+            {recentPosts.length > 0 && (
+              <div className='mt-7 text-left'>
+                <div className='text-sm font-medium text-[#5e5448] mb-3'>最近更新</div>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                  {recentPosts.map(item => (
+                    <SmartLink
+                      key={item.id}
+                      href={item.href}
+                      className='block rounded-xl border border-[#e7dfd2] bg-white/60 px-4 py-3 hover:border-[#cdbfa8] hover:bg-white transition-colors duration-200'>
+                      <div className='text-[0.95rem] text-[#2b241c] leading-snug truncate'>
+                        {item.title}
+                      </div>
+                      <div className='mt-2 text-xs text-[#8a7f73]'>{item.date?.start_date || item.createdTime}</div>
+                    </SmartLink>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className='mt-7 text-center'>
+              <SmartLink
+                href='/'
+                className='inline-flex items-center gap-2 rounded-full border border-[#d7cebf] px-5 py-2.5 text-sm text-[#5e5448] hover:text-[#2b241c] hover:border-[#bfb39f] transition-colors duration-200'>
+                返回首页看最新文章
+                <i className='fa-solid fa-arrow-right' />
+              </SmartLink>
+            </div>
+          </div>
         )}
       </section>
     </div>

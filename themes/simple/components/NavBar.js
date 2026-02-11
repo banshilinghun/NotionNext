@@ -33,12 +33,12 @@ export default function NavBar(props) {
   }
 
   return (
-    <nav className='w-full bg-white md:pt-0  relative z-20 shadow border-t border-gray-100 dark:border-hexo-black-gray dark:bg-black'>
+    <nav className='w-full bg-[#fbfbf7]/80 backdrop-blur supports-[backdrop-filter]:bg-[#fbfbf7]/70 relative z-20 border-t border-gray-200/70 dark:border-hexo-black-gray dark:bg-black'>
       <div
         id='nav-bar-inner'
-        className='h-12 mx-auto max-w-9/10 justify-between items-center text-sm md:text-md md:justify-start'>
+        className='h-12 mx-auto max-w-5xl justify-between items-center text-xs md:text-sm md:justify-start'>
         {/* 左侧菜单 */}
-        <div className='h-full w-full float-left text-center md:text-left flex flex-wrap items-stretch md:justify-start md:items-start space-x-4'>
+        <div className='h-full w-full float-left text-center md:text-left flex flex-wrap items-stretch md:justify-start md:items-center gap-x-4 gap-y-1'>
           {showSearchInput && (
             <input
               autoFocus
@@ -55,7 +55,7 @@ export default function NavBar(props) {
           {!showSearchInput && <MenuList {...props} />}
         </div>
 
-        <div className='absolute right-12 h-full text-center px-2 flex items-center text-blue-400  cursor-pointer'>
+        <div className='absolute right-6 h-full text-center px-2 flex items-center text-gray-500 hover:text-gray-900 cursor-pointer'>
           {/* <!-- extra links --> */}
           <i
             className={

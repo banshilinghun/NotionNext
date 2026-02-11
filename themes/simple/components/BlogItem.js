@@ -18,108 +18,76 @@ export const BlogItem = props => {
   return (
     <div
       key={post.id}
-      className='h-42 my-6 pb-12 border-b dark:border-gray-800'>
-      {/* 文章标题 */}
+      className='h-full rounded-2xl border border-gray-200/70 dark:border-gray-800 bg-white dark:bg-black/60 shadow-[0_1px_8px_rgba(17,24,39,0.06)] hover:shadow-[0_6px_18px_rgba(17,24,39,0.12)] transition-shadow duration-200'>
+      {/* 封面图 */}
+      {showPageCover && (
+        <SmartLink href={post.href} passHref legacyBehavior>
+          <div className='overflow-hidden rounded-t-2xl'>
+            <LazyImage
+              src={post?.pageCoverThumbnail}
+              className='w-full h-52 object-cover object-center hover:scale-[1.02] duration-500'
+            />
+          </div>
+        </SmartLink>
+      )}
 
-      <div className='flex'>
-        <div className='article-cover h-full'>
-          {/* 图片封面 */}
-          {showPageCover && (
-            <div className='overflow-hidden mr-2 w-56 h-full'>
-              <SmartLink href={post.href} passHref legacyBehavior>
-                <LazyImage
-                  src={post?.pageCoverThumbnail}
-                  className='w-56 h-full object-cover object-center group-hover:scale-110 duration-500'
-                />
-              </SmartLink>
+      <article className='p-6'>
+        <h2 className='mb-3'>
+          <SmartLink
+            href={post.href}
+            className='blog-item-title text-gray-900 dark:text-white text-2xl md:text-3xl leading-tight'>
+            {siteConfig('POST_TITLE_ICON') && (
+              <NotionIcon icon={post.pageIcon} />
+            )}
+            {post.title}
+          </SmartLink>
+        </h2>
+
+        {/* 文章信息 */}
+        <header className='mb-4 text-xs md:text-sm text-gray-600 dark:text-gray-300 flex flex-wrap items-center gap-x-3 gap-y-1'>
+          <span className='inline-flex items-center gap-1'>
+            <i className='fa-regular fa-user'></i>
+            {siteConfig('AUTHOR')}
+          </span>
+          <SmartLink
+            className='inline-flex items-center gap-1 hover:text-gray-900 dark:hover:text-white transition-colors duration-200'
+            href={`/archive#${formatDateFmt(post?.publishDate, 'yyyy-MM')}`}>
+            <i className='fa-regular fa-clock' />
+            {post.date?.start_date || post.createdTime}
+          </SmartLink>
+          <TwikooCommentCount post={post} />
+          {post.category && (
+            <SmartLink href={`/category/${post.category}`} className='inline-flex items-center gap-1'>
+              <i className='fa-regular fa-folder' />
+              {post.category}
+            </SmartLink>
+          )}
+        </header>
+
+        <main className='text-gray-700 dark:text-gray-300 leading-relaxed mb-6 text-[0.95rem]'>
+          {!showPreview && (
+            <>
+              {post.summary}
+              {post.summary && <span>...</span>}
+            </>
+          )}
+          {showPreview && post?.blockMap && (
+            <div className='overflow-ellipsis truncate'>
+              <NotionPage post={post} />
+              <hr className='border-dashed py-4' />
             </div>
           )}
+        </main>
+
+        <div className='pt-2'>
+          <SmartLink
+            href={post.href}
+            className='inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-200'>
+            Continue Reading
+            <i className='fa-solid fa-angle-right align-middle'></i>
+          </SmartLink>
         </div>
-
-        <article className='article-info'>
-          <h2 className='mb-2'>
-            <SmartLink
-              href={post.href}
-              className='blog-item-title font-bold text-black text-2xl menu-link'>
-              {siteConfig('POST_TITLE_ICON') && (
-                <NotionIcon icon={post.pageIcon} />
-              )}
-              {post.title}
-            </SmartLink>
-          </h2>
-
-          {/* 文章信息 */}
-          <header className='mb-5 text-md text-gray-700 dark:text-gray-300 flex-wrap flex leading-6'>
-            <div className='space-x-2'>
-              <span>
-                {' '}
-                <a
-                  href={siteConfig('SIMPLE_AUTHOR_LINK', null, CONFIG)}
-                  className='p-1 hover:text-red-400 transition-all duration-200'>
-                  <i className='fa-regular fa-user'></i> {siteConfig('AUTHOR')}
-                </a>
-              </span>
-              <span>
-                <SmartLink
-                  className='p-1 hover:text-red-400 transition-all duration-200'
-                  href={`/archive#${formatDateFmt(post?.publishDate, 'yyyy-MM')}`}>
-                  <i className='fa-regular fa-clock' />{' '}
-                  {post.date?.start_date || post.createdTime}
-                </SmartLink>
-              </span>
-              <span>
-                <TwikooCommentCount post={post} />
-              </span>
-            </div>
-
-            <div>
-              {post.category && (
-                <SmartLink href={`/category/${post.category}`} className='p-1'>
-                  {' '}
-                  <span className='hover:text-red-400 transition-all duration-200'>
-                    <i className='fa-regular fa-folder mr-0.5' />
-                    {post.category}
-                  </span>
-                </SmartLink>
-              )}
-              {post?.tags &&
-                post?.tags?.length > 0 &&
-                post?.tags.map(t => (
-                  <SmartLink
-                    key={t}
-                    href={`/tag/${t}`}
-                    className=' hover:text-red-400 transition-all duration-200'>
-                    <span> /{t}</span>
-                  </SmartLink>
-                ))}
-            </div>
-          </header>
-
-          <main className='text-gray-700 dark:text-gray-300 leading-normal mb-6'>
-            {!showPreview && (
-              <>
-                {post.summary}
-                {post.summary && <span>...</span>}
-              </>
-            )}
-            {showPreview && post?.blockMap && (
-              <div className='overflow-ellipsis truncate'>
-                <NotionPage post={post} />
-                <hr className='border-dashed py-4' />
-              </div>
-            )}
-          </main>
-        </article>
-      </div>
-
-      <div className='block'>
-        <SmartLink
-          href={post.href}
-          className='inline-block rounded-sm text-blue-600 dark:text-blue-300  text-xs dark:border-gray-800 border hover:text-red-400 transition-all duration-200 hover:border-red-300 h-9 leading-8 px-5'>
-          Continue Reading{' '}
-          <i className='fa-solid fa-angle-right align-middle'></i>
-        </SmartLink>
-      </div>
+      </article>
     </div>
   )
 }

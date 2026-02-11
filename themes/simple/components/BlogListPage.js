@@ -3,6 +3,7 @@ import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
+import { Fragment } from 'react'
 import CONFIG from '../config'
 import { BlogItem } from './BlogItem'
 
@@ -36,15 +37,25 @@ export default function BlogListPage(props) {
 
   return (
     <div className='w-full md:pr-8 mb-12'>
-      <div id='posts-wrapper'>
+      <div
+        id='posts-wrapper'
+        className='grid grid-cols-1 md:grid-cols-2 gap-8'>
         {posts?.map((p, index) => (
-          <div key={p.id}>
+          <Fragment key={p.id}>
             {SIMPLE_POST_AD_ENABLE && (index + 1) % 3 === 0 && (
-              <AdSlot type='in-article' />
+              <div key={`${p.id}-ad-in`} className='col-span-full'>
+                <AdSlot type='in-article' />
+              </div>
             )}
-            {SIMPLE_POST_AD_ENABLE && index + 1 === 4 && <AdSlot type='flow' />}
-            <BlogItem post={p} />
-          </div>
+            {SIMPLE_POST_AD_ENABLE && index + 1 === 4 && (
+              <div key={`${p.id}-ad-flow`} className='col-span-full'>
+                <AdSlot type='flow' />
+              </div>
+            )}
+            <div className='h-full'>
+              <BlogItem post={p} />
+            </div>
+          </Fragment>
         ))}
       </div>
 

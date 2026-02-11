@@ -6,7 +6,19 @@
  */
 const Style = () => {
   return <style jsx global>{`
-    
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:wght@400;600&display=swap');
+
+  #theme-simple {
+    font-family: 'IBM Plex Sans', 'Noto Sans', sans-serif;
+  }
+
+  #theme-simple h1,
+  #theme-simple h2,
+  #theme-simple h3,
+  #theme-simple .blog-item-title {
+    font-family: 'IBM Plex Serif', 'Noto Serif', serif;
+  }
+
   // 底色
   .dark body{
       background-color: black;
@@ -23,7 +35,7 @@ const Style = () => {
   }
   
   #theme-simple .blog-item-title {
-    color: #276077;
+    color: #111827;
   }
   
   .dark #theme-simple .blog-item-title {
@@ -39,16 +51,16 @@ const Style = () => {
   /*  菜单下划线动画 */
   #theme-simple .menu-link {
       text-decoration: none;
-      background-image: linear-gradient(#dd3333, #dd3333);
+      background-image: linear-gradient(#111827, #111827);
       background-repeat: no-repeat;
       background-position: bottom center;
       background-size: 0 2px;
-      transition: background-size 100ms ease-in-out;
+      transition: background-size 120ms ease-in-out, color 120ms ease-in-out;
   }
    
   #theme-simple .menu-link:hover {
       background-size: 100% 2px;
-      color: #dd3333;
+      color: #111827;
       cursor: pointer;
   }
   

@@ -74,7 +74,7 @@ const LayoutBase = props => {
     <ThemeGlobalSimple.Provider value={{ searchModal }}>
       <div
         id='theme-simple'
-        className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:text-gray-300  bg-white dark:bg-black scroll-smooth`}>
+        className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:text-gray-300 bg-[#f7f6f3] dark:bg-black scroll-smooth`}>
         <Style />
 
         {siteConfig('SIMPLE_TOP_BAR', null, CONFIG) && <TopBar {...props} />}
@@ -91,7 +91,8 @@ const LayoutBase = props => {
           className={
             (JSON.parse(siteConfig('LAYOUT_SIDEBAR_REVERSE'))
               ? 'flex-row-reverse'
-              : '') + ' w-full flex-1 flex items-start max-w-9/10 mx-auto pt-12'
+              : '') +
+            ' w-full flex-1 flex items-start max-w-5xl mx-auto pt-12 px-6'
           }>
           <div id='container-inner ' className='w-full flex-grow min-h-fit'>
             <Transition
@@ -114,7 +115,7 @@ const LayoutBase = props => {
           {fullWidth ? null : (
             <div
               id='right-sidebar'
-              className='hidden xl:block flex-none sticky top-8 w-96 border-l dark:border-gray-800 pl-12 border-gray-100'>
+              className='hidden xl:block flex-none sticky top-8 w-96 border-l dark:border-gray-800 pl-12 border-gray-200/60'>
               <SideBar {...props} />
             </div>
           )}

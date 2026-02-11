@@ -17,9 +17,9 @@ export const MenuItemDrop = ({ link }) => {
         <SmartLink
           href={link?.href}
           target={link?.target}
-          className=' menu-link pl-2 pr-4 text-gray-700 dark:text-gray-200 no-underline tracking-widest pb-1'>
+          className='menu-link px-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white no-underline tracking-wide pb-1 transition-colors duration-200'>
           {link?.icon && (
-            <span className='mr-2'>
+            <span className='mr-1.5 text-[0.7rem]'>
               <i className={link.icon} />
             </span>
           )}
@@ -30,9 +30,9 @@ export const MenuItemDrop = ({ link }) => {
 
       {hasSubMenu && (
         <>
-          <div className='cursor-pointer  menu-link pl-2 pr-4 text-gray-700 dark:text-gray-200 no-underline tracking-widest pb-1'>
+          <div className='cursor-pointer menu-link px-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white no-underline tracking-wide pb-1 transition-colors duration-200'>
             {link?.icon && (
-              <span className='mr-2'>
+              <span className='mr-1.5 text-[0.7rem]'>
                 <i className={link.icon} />
               </span>
             )}{' '}

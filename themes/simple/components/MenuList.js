@@ -71,7 +71,7 @@ export const MenuList = ({ customNav, customMenu }) => {
   return (
     <>
       {/* 大屏模式菜单 */}
-      <div id='nav-menu-pc' className='hidden md:flex my-auto'>
+      <div id='nav-menu-pc' className='hidden md:flex my-auto gap-x-1'>
         {links?.map((link, index) => (
           <MenuItemDrop key={index} link={link} />
         ))}

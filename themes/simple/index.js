@@ -250,7 +250,7 @@ const LayoutSlug = props => {
       {lock && <ArticleLock validPassword={validPassword} />}
 
       {!lock && post && (
-        <div className={`px-2 ${fullWidth ? '' : 'xl:max-w-5xl 2xl:max-w-6xl'}`}>
+        <div className={`px-2 ${fullWidth ? '' : 'xl:max-w-6xl 2xl:max-w-7xl'}`}>
           {/* 文章信息 */}
           <ArticleInfo post={post} />
 

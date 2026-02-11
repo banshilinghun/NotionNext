@@ -64,7 +64,7 @@ export const BlogItem = props => {
           )}
         </header>
 
-        <main className={`text-[#5e5448] dark:text-gray-300 leading-[1.85] ${featured ? 'text-[1.02rem] mb-7' : 'text-[0.95rem] mb-6'}`}>
+        <main className={`text-[#5e5448] dark:text-gray-300 leading-[1.74] ${featured ? 'text-[0.98rem] mb-7' : 'text-[0.93rem] mb-6'}`}>
           {!showPreview && (
             <>
               {post.summary}

@@ -55,15 +55,21 @@ export default function BlogListScroll(props) {
 
   return (
     <div id='posts-wrapper' className='w-full mb-12' ref={targetRef}>
-      <div className='grid grid-cols-1 gap-10'>
-        {postsToShow.map(p => (
+      {postsToShow[0] && (
+        <div className='mb-8'>
+          <BlogItem post={postsToShow[0]} featured />
+        </div>
+      )}
+
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-7'>
+        {postsToShow.slice(1).map(p => (
           <BlogItem key={p.id} post={p} />
         ))}
       </div>
 
       <div
         onClick={handleGetMore}
-        className='w-full my-6 py-4 text-center cursor-pointer text-xs tracking-[0.18em] uppercase text-gray-500 hover:text-gray-900 transition-colors duration-200'>
+        className='w-full my-6 py-4 text-center cursor-pointer text-xs tracking-[0.15em] uppercase text-[#8a7f73] hover:text-[#2b241c] transition-colors duration-200'>
         {hasMore ? locale.COMMON.MORE : `${locale.COMMON.NO_MORE}`}
       </div>
     </div>

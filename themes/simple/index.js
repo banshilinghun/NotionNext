@@ -83,7 +83,7 @@ const LayoutBase = props => {
     <ThemeGlobalSimple.Provider value={{ searchModal }}>
       <div
         id='theme-simple'
-        className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:text-gray-300 bg-[#f7f6f3] dark:bg-black scroll-smooth`}>
+        className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:text-gray-300 bg-[#f7f3ec] dark:bg-black scroll-smooth`}>
         <Style />
 
         {siteConfig('SIMPLE_TOP_BAR', null, CONFIG) && <TopBar {...props} />}
@@ -101,7 +101,7 @@ const LayoutBase = props => {
             (JSON.parse(siteConfig('LAYOUT_SIDEBAR_REVERSE'))
               ? 'flex-row-reverse'
               : '') +
-            ' w-full flex-1 flex items-start max-w-5xl mx-auto pt-12 px-6'
+            ' w-full flex-1 flex items-start max-w-5xl mx-auto pt-10 px-6'
           }>
           <div id='container-inner ' className='w-full flex-grow min-h-fit'>
             <Transition
@@ -161,13 +161,13 @@ const LayoutPostList = props => {
   const { category, tag } = props
 
   return (
-    <div className='w-full max-w-4xl mx-auto'>
+    <div className='w-full max-w-[56rem] mx-auto'>
       {!category && !tag && (
-        <section className='text-center mb-10 md:mb-14 px-4'>
-          <h2 className='text-2xl md:text-3xl text-gray-900 tracking-tight leading-tight'>
+        <section className='text-center mb-8 md:mb-10 px-4'>
+          <h2 className='text-2xl md:text-[2rem] text-[#2b241c] tracking-tight leading-tight'>
             慢生活记录
           </h2>
-          <p className='mt-3 text-sm md:text-base text-gray-500 leading-relaxed'>
+          <p className='mt-3 text-sm md:text-[0.95rem] text-[#8a7f73] leading-relaxed'>
             关于日常、家庭、工作与思考的真实片段。
           </p>
         </section>

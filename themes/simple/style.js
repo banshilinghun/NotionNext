@@ -10,6 +10,15 @@ const Style = () => {
 
   #theme-simple {
     font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+    --sn-bg-page: #f7f3ec;
+    --sn-bg-section: #fbf8f3;
+    --sn-bg-card: #fffdf9;
+    --sn-text-title: #2b241c;
+    --sn-text-body: #5e5448;
+    --sn-text-muted: #8a7f73;
+    --sn-line: #e3dbcf;
+    --sn-accent: #6d8a57;
+    --sn-accent-hover: #5b7547;
   }
 
   #theme-simple h1,
@@ -35,7 +44,7 @@ const Style = () => {
   }
   
   #theme-simple .blog-item-title {
-    color: #111827;
+    color: var(--sn-text-title);
   }
   
   .dark #theme-simple .blog-item-title {
@@ -51,7 +60,7 @@ const Style = () => {
   /*  菜单下划线动画 */
   #theme-simple .menu-link {
       text-decoration: none;
-      background-image: linear-gradient(#4b5563, #4b5563);
+      background-image: linear-gradient(var(--sn-accent), var(--sn-accent));
       background-repeat: no-repeat;
       background-position: bottom center;
       background-size: 0 2px;
@@ -60,7 +69,7 @@ const Style = () => {
    
   #theme-simple .menu-link:hover {
       background-size: 100% 2px;
-      color: #374151;
+      color: var(--sn-accent-hover);
       cursor: pointer;
   }
   

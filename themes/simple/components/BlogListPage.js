@@ -35,26 +35,26 @@ export default function BlogListPage(props) {
     .replace(/\/$/, '')
     .replace('.html', '')
 
+  const featuredPost = posts?.[0]
+  const restPosts = posts?.slice(1) || []
+
   return (
     <div className='w-full mb-12'>
-      <div
-        id='posts-wrapper'
-        className='grid grid-cols-1 gap-10'>
-        {posts?.map((p, index) => (
+      {featuredPost && (
+        <div id='posts-wrapper' className='mb-8'>
+          <BlogItem post={featuredPost} featured />
+        </div>
+      )}
+
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-7'>
+        {restPosts.map((p, index) => (
           <Fragment key={p.id}>
-            {SIMPLE_POST_AD_ENABLE && (index + 1) % 3 === 0 && (
+            {SIMPLE_POST_AD_ENABLE && (index + 1) % 4 === 0 && (
               <div key={`${p.id}-ad-in`} className='col-span-full'>
                 <AdSlot type='in-article' />
               </div>
             )}
-            {SIMPLE_POST_AD_ENABLE && index + 1 === 4 && (
-              <div key={`${p.id}-ad-flow`} className='col-span-full'>
-                <AdSlot type='flow' />
-              </div>
-            )}
-            <div className='h-full'>
-              <BlogItem post={p} />
-            </div>
+            <BlogItem post={p} />
           </Fragment>
         ))}
       </div>

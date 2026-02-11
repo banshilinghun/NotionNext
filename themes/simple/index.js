@@ -78,6 +78,13 @@ const LayoutBase = props => {
     router.pathname.startsWith('/category/') ||
     router.pathname === '/tag' ||
     router.pathname.startsWith('/tag/')
+  const isArticlePage =
+    router.pathname === '/[slug]' ||
+    router.pathname === '/[prefix]/[slug]' ||
+    router.pathname.includes('[slug]')
+  const hasToc = Boolean(props?.post?.toc?.length)
+  const showRightSidebar =
+    !fullWidth && !isListLikePage && (!isArticlePage || hasToc)
 
   return (
     <ThemeGlobalSimple.Provider value={{ searchModal }}>
@@ -101,7 +108,7 @@ const LayoutBase = props => {
             (JSON.parse(siteConfig('LAYOUT_SIDEBAR_REVERSE'))
               ? 'flex-row-reverse'
               : '') +
-            ' w-full flex-1 flex items-start max-w-5xl mx-auto pt-10 px-6'
+            ` w-full flex-1 flex items-start ${isArticlePage ? 'max-w-6xl' : 'max-w-5xl'} mx-auto pt-10 px-6`
           }>
           <div id='container-inner ' className='w-full flex-grow min-h-fit'>
             <Transition
@@ -121,13 +128,13 @@ const LayoutBase = props => {
             <AdSlot type='native' />
           </div>
 
-          {fullWidth || isListLikePage ? null : (
+          {showRightSidebar ? (
             <div
               id='right-sidebar'
               className='hidden 2xl:block flex-none sticky top-8 w-80 border-l dark:border-gray-800 pl-10 border-gray-200/60'>
-              <SideBar {...props} />
+              <SideBar {...props} tocOnly={isArticlePage} />
             </div>
-          )}
+          ) : null}
         </div>
 
         <div className='fixed right-4 bottom-4 z-20'>

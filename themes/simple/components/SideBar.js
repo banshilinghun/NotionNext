@@ -10,7 +10,11 @@ import WWAds from '@/components/WWAds'
  * @returns
  */
 export default function SideBar (props) {
-  const { notice } = props
+  const { notice, tocOnly } = props
+  if (tocOnly) {
+    return <Catalog {...props} />
+  }
+
   return (<>
 
             <Catalog {...props} />

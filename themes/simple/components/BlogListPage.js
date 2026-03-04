@@ -35,8 +35,26 @@ export default function BlogListPage(props) {
     .replace(/\/$/, '')
     .replace('.html', '')
 
-  const featuredPost = posts?.[0]
-  const restPosts = posts?.slice(1) || []
+  const SIMPLE_FEATURED_TAG = siteConfig(
+    'SIMPLE_FEATURED_TAG',
+    'Featured',
+    CONFIG
+  )
+
+  const isFeatured = p =>
+    SIMPLE_FEATURED_TAG &&
+    Array.isArray(p?.tags) &&
+    p.tags.includes(SIMPLE_FEATURED_TAG)
+
+  // 仅在第一页展示精选。优先展示带 Featured tag 的文章；否则回退到第一篇。
+  const featuredPost =
+    currentPage === 1
+      ? posts?.find(isFeatured) || posts?.[0]
+      : null
+
+  const restPosts = featuredPost
+    ? (posts || []).filter(p => p?.id !== featuredPost?.id)
+    : posts || []
 
   return (
     <div className='w-full mb-12'>

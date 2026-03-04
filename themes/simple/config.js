@@ -11,6 +11,9 @@ const CONFIG = {
 
   SIMPLE_POST_COVER_ENABLE: process.env.NEXT_PUBLIC_SIMPLE_POST_COVER_ENABLE || true, // 是否展示博客封面
 
+  // 首页精选文章 tag 名（匹配 Notion tags）。若为空则默认取第一篇作为 featured。
+  SIMPLE_FEATURED_TAG: process.env.NEXT_PUBLIC_SIMPLE_FEATURED_TAG || 'Featured',
+
   SIMPLE_ARTICLE_RECOMMEND_POSTS: process.env.NEXT_PUBLIC_SIMPLE_ARTICLE_RECOMMEND_POSTS || true, // 文章详情底部显示推荐
 
   // 菜单配置

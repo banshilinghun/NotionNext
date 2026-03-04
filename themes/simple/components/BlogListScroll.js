@@ -2,6 +2,7 @@ import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import CONFIG from '../config'
 import { BlogItem } from './BlogItem'
 
 /**
@@ -53,16 +54,32 @@ export default function BlogListScroll(props) {
     }
   })
 
+  const SIMPLE_FEATURED_TAG = siteConfig(
+    'SIMPLE_FEATURED_TAG',
+    'Featured',
+    CONFIG
+  )
+
+  const isFeatured = p =>
+    SIMPLE_FEATURED_TAG &&
+    Array.isArray(p?.tags) &&
+    p.tags.includes(SIMPLE_FEATURED_TAG)
+
+  const featuredPost = postsToShow?.find(isFeatured) || postsToShow?.[0]
+  const restPosts = featuredPost
+    ? postsToShow.filter(p => p?.id !== featuredPost?.id)
+    : postsToShow
+
   return (
     <div id='posts-wrapper' className='w-full mb-12' ref={targetRef}>
-      {postsToShow[0] && (
+      {featuredPost && (
         <div className='mb-8'>
-          <BlogItem post={postsToShow[0]} featured />
+          <BlogItem post={featuredPost} featured />
         </div>
       )}
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-7'>
-        {postsToShow.slice(1).map(p => (
+        {restPosts.map(p => (
           <BlogItem key={p.id} post={p} />
         ))}
       </div>

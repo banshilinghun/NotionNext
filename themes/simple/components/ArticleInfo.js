@@ -10,49 +10,72 @@ import NotionIcon from '@/components/NotionIcon'
  * @param {*} props
  * @returns
  */
-export default function ArticleInfo (props) {
+export default function ArticleInfo(props) {
   const { post } = props
-
   const { locale } = useGlobal()
 
+  const tags = Array.isArray(post?.tags) ? post.tags : []
+
   return (
-        <section className="mt-2 text-gray-600 dark:text-gray-400 leading-8">
-            <h2
-                className="blog-item-title mb-5 font-bold text-black text-xl md:text-2xl no-underline">
-                {siteConfig('POST_TITLE_ICON') && <NotionIcon icon={post?.pageIcon} />}{post?.title}
-            </h2>
+    <section className='mt-2 text-[#5e5448] dark:text-gray-300 leading-7'>
+      <h2 className='blog-item-title mb-4 font-bold text-[#2b241c] dark:text-white text-xl md:text-2xl no-underline leading-tight'>
+        {siteConfig('POST_TITLE_ICON') && <NotionIcon icon={post?.pageIcon} />}
+        {post?.title}
+      </h2>
 
-            <div className='flex flex-wrap text-gray-700 dark:text-gray-300'>
-                {post?.type !== 'Page' && (
-                    <div className="space-x-3 mr-4">
-                        <span> <i className="fa-regular fa-user"></i> <a href={siteConfig('SIMPLE_AUTHOR_LINK', null, CONFIG)}>{siteConfig('AUTHOR')}</a></span>
-                        <span> <i className="fa-regular fa-clock"></i> {post?.publishDay}</span>
-                        {post?.category && <span>  <i className="fa-regular fa-folder"></i> <a href={`/category/${post?.category}`} className="hover:text-red-400 transition-all duration-200">{post?.category}</a></span>}
-                        {post?.tags && post?.tags?.length > 0 && post?.tags.map(t => <span key={t}> / <SmartLink href={`/tag/${t}`}><span className=' hover:text-red-400 transition-all duration-200'>{t}</span></SmartLink></span>)}
-                    </div>)}
+      {post?.type !== 'Page' && (
+        <div className='flex flex-wrap items-center gap-x-3 gap-y-2 text-xs md:text-sm text-[#8a7f73] dark:text-gray-300'>
+          <span className='inline-flex items-center gap-1'>
+            <i className='fa-regular fa-user' />
+            <a
+              className='hover:text-[#2b241c] dark:hover:text-white transition-colors'
+              href={siteConfig('SIMPLE_AUTHOR_LINK', null, CONFIG)}>
+              {siteConfig('AUTHOR')}
+            </a>
+          </span>
 
-                {post?.type !== 'Page' && (<div className=''>
-                    <span>{locale.COMMON.POST_TIME}:
-                        <SmartLink
-                            href={`/archive#${formatDateFmt(post?.publishDate, 'yyyy-MM')}`}
-                            passHref
-                            className="pl-1 mr-2 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 border-b dark:border-gray-500 border-dashed">
-                            {post?.publishDay}
-                        </SmartLink>
-                    </span>
-                    <span className='mr-2'>|</span>
-                    <span className='mx-2  dark:text-gray-500'>
-                        {locale.COMMON.LAST_EDITED_TIME}: {post?.lastEditedDay}
-                    </span>
-                    <span className='mr-2'>|</span>
-                    <span className="hidden busuanzi_container_page_pv font-light mr-2">
-                        <i className='mr-1 fas fa-eye' />
-                        &nbsp;
-                        <span className="mr-2 busuanzi_value_page_pv" />
-                    </span>
-                </div>)}
+          <SmartLink
+            className='inline-flex items-center gap-1 hover:text-[#2b241c] dark:hover:text-white transition-colors'
+            href={`/archive#${formatDateFmt(post?.publishDate, 'yyyy-MM')}`}>
+            <i className='fa-regular fa-clock' />
+            {post?.publishDay}
+          </SmartLink>
 
-            </div>
-        </section>
+          {post?.category && (
+            <SmartLink
+              href={`/category/${post?.category}`}
+              className='inline-flex items-center gap-1 hover:text-[#2b241c] dark:hover:text-white transition-colors'>
+              <i className='fa-regular fa-folder' />
+              {post?.category}
+            </SmartLink>
+          )}
+
+          {tags.length > 0 && (
+            <span className='inline-flex items-center gap-2 flex-wrap'>
+              <i className='fa-solid fa-hashtag opacity-70' />
+              {tags.map(t => (
+                <SmartLink
+                  key={t}
+                  href={`/tag/${t}`}
+                  className='no-underline px-2 py-1 rounded-full border border-stone-200/80 dark:border-gray-800 bg-[#fffdf9]/70 dark:bg-black/40 hover:text-[#2b241c] dark:hover:text-white transition-colors'>
+                  {t}
+                </SmartLink>
+              ))}
+            </span>
+          )}
+
+          <span className='mx-1 opacity-50'>·</span>
+          <span className='dark:text-gray-500'>
+            {locale.COMMON.LAST_EDITED_TIME}: {post?.lastEditedDay}
+          </span>
+
+          <span className='hidden busuanzi_container_page_pv font-light'>
+            <i className='mr-1 fas fa-eye' />
+            <span className='busuanzi_value_page_pv' />
+          </span>
+        </div>
+      )}
+    </section>
   )
 }
+

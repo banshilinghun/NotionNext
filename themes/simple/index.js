@@ -173,12 +173,33 @@ const LayoutPostList = props => {
     <div className='w-full max-w-[56rem] mx-auto'>
       {!category && !tag && (
         <section className='text-center mb-8 md:mb-10 px-4'>
-          <h2 className='text-2xl md:text-[2rem] text-[#2b241c] tracking-tight leading-tight'>
-            慢生活记录
+          <h2 className='text-2xl md:text-[2rem] text-[#2b241c] dark:text-white tracking-tight leading-tight'>
+            {siteConfig('TITLE') || 'Acluxo'}
           </h2>
-          <p className='mt-3 text-sm md:text-[0.95rem] text-[#8a7f73] leading-relaxed'>
-            关于日常、家庭、工作与思考的真实片段。
+          <p className='mt-3 text-sm md:text-[0.98rem] text-[#8a7f73] dark:text-gray-300 leading-relaxed'>
+            {siteConfig('DESCRIPTION') || '认真生活，慢慢记录'}
           </p>
+
+          <div className='mt-5 flex flex-wrap justify-center gap-3'>
+            <SmartLink
+              href='/category/声音'
+              className='no-underline inline-flex items-center gap-2 px-4 py-2 rounded-full border border-stone-200/80 dark:border-gray-800 bg-[#fffdf9] dark:bg-black/40 text-[#2b241c] dark:text-gray-100 hover:shadow-[0_8px_24px_rgba(62,45,25,0.12)] transition-shadow'>
+              <i className='fa-solid fa-microphone' />
+              声音
+            </SmartLink>
+            <SmartLink
+              href='/archive'
+              className='no-underline inline-flex items-center gap-2 px-4 py-2 rounded-full border border-stone-200/80 dark:border-gray-800 bg-[#fffdf9] dark:bg-black/40 text-[#2b241c] dark:text-gray-100 hover:shadow-[0_8px_24px_rgba(62,45,25,0.12)] transition-shadow'>
+              <i className='fa-regular fa-clock' />
+              归档
+            </SmartLink>
+            <SmartLink
+              href='/about'
+              className='no-underline inline-flex items-center gap-2 px-4 py-2 rounded-full border border-stone-200/80 dark:border-gray-800 bg-[#fffdf9] dark:bg-black/40 text-[#2b241c] dark:text-gray-100 hover:shadow-[0_8px_24px_rgba(62,45,25,0.12)] transition-shadow'>
+              <i className='fa-regular fa-user' />
+              关于
+            </SmartLink>
+          </div>
         </section>
       )}
 

@@ -43,11 +43,13 @@ export const BlogItem = props => {
       {/* 封面图 */}
       {showPageCover && (
         <SmartLink href={post.href} passHref legacyBehavior>
-          <div className={`overflow-hidden ${featured ? 'rounded-t-3xl' : 'rounded-t-2xl'}`}>
+          <div className={`relative overflow-hidden ${featured ? 'rounded-t-3xl' : 'rounded-t-2xl'}`}>
             <LazyImage
               src={post?.pageCoverThumbnail || siteConfig('BG_IMAGE', '/bg_image.jpg')}
               className={`w-full object-cover object-center hover:scale-[1.015] duration-500 ${featured ? 'aspect-[18/8]' : 'aspect-[16/9]'}`}
             />
+            {/* subtle gradient overlay for better title contrast / premium feel */}
+            <div className='pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent dark:from-black/30' />
           </div>
         </SmartLink>
       )}
@@ -66,6 +68,14 @@ export const BlogItem = props => {
 
         {/* 文章信息 */}
         <header className='mb-4 text-xs md:text-sm text-[#8a7f73] dark:text-gray-300 flex flex-wrap items-center gap-x-3 gap-y-2'>
+          {(post?.readTime || post?.wordCount) && (
+            <span className='inline-flex items-center gap-1 px-2 py-1 rounded-full border border-stone-200/80 dark:border-gray-800 bg-[#fffdf9]/70 dark:bg-black/40'>
+              <i className='fa-regular fa-file-lines' />
+              {post?.readTime ? `${post.readTime} min` : ''}
+              {post?.readTime && post?.wordCount ? ' · ' : ''}
+              {post?.wordCount ? `${post.wordCount} words` : ''}
+            </span>
+          )}
           <span className='inline-flex items-center gap-1'>
             <i className='fa-regular fa-user'></i>
             {siteConfig('AUTHOR')}

@@ -45,7 +45,7 @@ export const BlogItem = props => {
         <SmartLink href={post.href} passHref legacyBehavior>
           <div className={`overflow-hidden ${featured ? 'rounded-t-3xl' : 'rounded-t-2xl'}`}>
             <LazyImage
-              src={post?.pageCoverThumbnail}
+              src={post?.pageCoverThumbnail || siteConfig('BG_IMAGE', '/bg_image.jpg')}
               className={`w-full object-cover object-center hover:scale-[1.015] duration-500 ${featured ? 'aspect-[18/8]' : 'aspect-[16/9]'}`}
             />
           </div>

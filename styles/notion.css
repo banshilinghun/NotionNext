@@ -981,6 +981,32 @@ code[class*='language-'] {
   cursor: pointer;
   outline: none;
   font-weight: 650;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Small badge hint to readers that the section is expandable */
+.notion-toggle > summary::after {
+  content: '展开';
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 113, 108, 0.25);
+  color: rgba(120, 113, 108, 0.95);
+  margin-left: auto;
+}
+
+.dark .notion-toggle > summary::after {
+  border-color: rgba(148, 163, 184, 0.22);
+  color: rgba(203, 213, 225, 0.9);
+}
+
+.notion-toggle[open] > summary::after {
+  content: '收起';
 }
 
 .notion-toggle > summary:hover {

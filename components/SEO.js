@@ -153,8 +153,12 @@ const SEO = props => {
 
       {/* Twitter Card 元数据 */}
       <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:site' content={siteConfig('TWITTER_SITE', '@NotionNext')} />
-      <meta name='twitter:creator' content={siteConfig('TWITTER_CREATOR', '@NotionNext')} />
+      {siteConfig('TWITTER_SITE') && (
+        <meta name='twitter:site' content={siteConfig('TWITTER_SITE')} />
+      )}
+      {siteConfig('TWITTER_CREATOR') && (
+        <meta name='twitter:creator' content={siteConfig('TWITTER_CREATOR')} />
+      )}
       <meta name='twitter:title' content={title} />
       <meta name='twitter:description' content={description} />
       <meta name='twitter:image' content={image} />

@@ -7,12 +7,34 @@ import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
 import CONFIG from '../config'
 
+function extractTextFromNotionTitle(title = []) {
+  // Notion title/rich_text array -> plain text
+  return (title || []).map(t => t?.plain_text || '').join('')
+}
+
+function fallbackSummary(post) {
+  if (post?.summary) return post.summary
+  // If we have blockMap, take the first text block as an excerpt
+  const bm = post?.blockMap
+  const blocks = bm?.block ? Object.values(bm.block) : []
+  for (const b of blocks) {
+    const v = b?.value
+    if (v?.type === 'text' && v?.properties?.title) {
+      const t = extractTextFromNotionTitle(v.properties.title)
+      if (t) return t.slice(0, 140)
+    }
+  }
+  return ''
+}
+
 export const BlogItem = props => {
   const { post, featured = false } = props
   const { NOTION_CONFIG } = useGlobal()
   const showPageCover = siteConfig('SIMPLE_POST_COVER_ENABLE', false, CONFIG)
   const showPreview =
     siteConfig('POST_LIST_PREVIEW', false, NOTION_CONFIG) && post.blockMap
+
+  const summaryText = fallbackSummary(post)
 
   return (
     <div
@@ -67,8 +89,8 @@ export const BlogItem = props => {
         <main className={`text-[#5e5448] dark:text-gray-300 leading-[1.74] ${featured ? 'text-[0.98rem] mb-7' : 'text-[0.93rem] mb-6'}`}>
           {!showPreview && (
             <>
-              {post.summary}
-              {post.summary && <span>...</span>}
+              {summaryText}
+              {summaryText && <span>...</span>}
             </>
           )}
           {showPreview && post?.blockMap && (

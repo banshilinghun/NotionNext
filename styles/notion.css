@@ -965,15 +965,31 @@ code[class*='language-'] {
 }
 
 .notion-toggle {
-  padding: 3px 2px;
+  padding: 10px 12px;
   width: 100%;
+  border: 1px solid rgba(120, 113, 108, 0.25);
+  border-radius: 14px;
+  background: rgba(255, 253, 249, 0.7);
 }
+
+.dark .notion-toggle {
+  border-color: rgba(148, 163, 184, 0.22);
+  background: rgba(0, 0, 0, 0.35);
+}
+
 .notion-toggle > summary {
   cursor: pointer;
   outline: none;
+  font-weight: 650;
 }
+
+.notion-toggle > summary:hover {
+  opacity: 0.9;
+}
+
 .notion-toggle > div {
   margin-left: 1.1em;
+  margin-top: 6px;
 }
 
 .notion-list-view {

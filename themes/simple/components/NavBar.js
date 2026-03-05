@@ -33,10 +33,10 @@ export default function NavBar(props) {
   }
 
   return (
-    <nav className='w-full bg-[#fbf8f3]/80 backdrop-blur supports-[backdrop-filter]:bg-[#fbf8f3]/70 relative z-20 border-t border-[#e3dbcf] dark:border-hexo-black-gray dark:bg-black'>
+    <nav className='w-full bg-[#fbf8f3]/70 dark:bg-black/60 backdrop-blur supports-[backdrop-filter]:bg-[#fbf8f3]/60 sticky top-[72px] md:top-[64px] z-20 border-b border-[#e3dbcf] dark:border-gray-800'>
       <div
         id='nav-bar-inner'
-        className='h-11 mx-auto max-w-5xl justify-between items-center text-xs md:text-sm md:justify-start'>
+        className='h-11 mx-auto max-w-5xl justify-between items-center text-xs md:text-sm md:justify-start px-6'>
         {/* 左侧菜单 */}
         <div className='h-full w-full float-left text-center md:text-left flex flex-wrap items-stretch md:justify-start md:items-center gap-x-4 gap-y-1'>
           {showSearchInput && (

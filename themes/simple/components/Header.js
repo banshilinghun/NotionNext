@@ -11,47 +11,40 @@ import SocialButton from './SocialButton'
 export default function Header(props) {
   const { siteInfo } = props
 
+  // Make the top area more "website-like": compact, sticky, and clean.
+  // The homepage already has a hero section; this header acts as a consistent nav anchor.
   return (
-    <header className='relative z-10 bg-[#fbf8f3] dark:bg-black border-b border-[#e3dbcf] dark:border-gray-800'>
-      <div className='mx-auto max-w-5xl px-6 py-10 md:py-14'>
-        <div className='flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10'>
-          <SmartLink href='/' className='shrink-0'>
-            <div className='hover:scale-[1.02] transform duration-200 cursor-pointer flex items-center justify-center'>
+    <header className='sticky top-0 z-30 bg-[#fbf8f3]/85 dark:bg-black/70 backdrop-blur border-b border-[#e3dbcf] dark:border-gray-800'>
+      <div className='mx-auto max-w-5xl px-6 py-4'>
+        <div className='flex items-center justify-between gap-4'>
+          <SmartLink href='/' className='shrink-0 no-underline'>
+            <div className='flex items-center gap-3 hover:opacity-95 transition-opacity'>
               <LazyImage
                 priority={true}
                 src={siteInfo?.icon}
-                className='rounded-full ring-4 ring-white dark:ring-gray-900 shadow-md'
-                width={96}
-                height={96}
+                className='rounded-full ring-2 ring-white/80 dark:ring-gray-900 shadow-sm'
+                width={38}
+                height={38}
                 alt={siteConfig('AUTHOR')}
               />
+              <div className='leading-tight'>
+                <div className='text-[1.05rem] font-semibold text-[#2b241c] dark:text-white'>
+                  {siteConfig('TITLE')}
+                </div>
+                <div className='hidden md:block text-xs text-[#8a7f73] dark:text-gray-400'>
+                  {siteConfig('DESCRIPTION')}
+                </div>
+              </div>
             </div>
           </SmartLink>
 
-          <div className='flex-1 text-center md:text-left'>
-            <SmartLink href='/'>
-              <h1 className='text-3xl md:text-5xl leading-tight tracking-tight text-[#2b241c] dark:text-white'>
-                {siteConfig('TITLE')}
-              </h1>
-            </SmartLink>
-
-            <div
-              className='mt-2 text-[1.05rem] md:text-[1.15rem] text-[#5e5448] dark:text-gray-300 tracking-wide'
-              dangerouslySetInnerHTML={{
-                __html: siteConfig('SIMPLE_LOGO_DESCRIPTION', null, CONFIG)
-              }}
-            />
-
-            <div className='mt-6 flex justify-center md:justify-start'>
-              <SocialButton />
-            </div>
-
-            <p className='mt-4 text-sm md:text-[0.95rem] text-[#8a7f73] dark:text-gray-400 max-w-2xl leading-relaxed'>
-              {siteConfig('DESCRIPTION')}
-            </p>
+          {/* Keep the header clean; social links can live in footer/sidebar. */}
+          <div className='hidden md:flex items-center gap-2'>
+            <SocialButton />
           </div>
         </div>
       </div>
     </header>
   )
 }
+

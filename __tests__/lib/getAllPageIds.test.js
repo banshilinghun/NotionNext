@@ -11,7 +11,9 @@ describe('getAllPageIds', () => {
     const collectionView = {
       'view-1': {
         value: {
-          page_sort: ['page-a', 'page-b']
+          value: {
+            page_sort: ['page-a', 'page-b']
+          }
         }
       }
     }

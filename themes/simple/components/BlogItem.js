@@ -5,6 +5,7 @@ import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
+import { getPostCover } from '@/lib/post-cover'
 import CONFIG from '../config'
 
 function extractTextFromNotionTitle(title = []) {
@@ -33,6 +34,7 @@ export const BlogItem = props => {
   const showPageCover = siteConfig('SIMPLE_POST_COVER_ENABLE', false, CONFIG)
   const showPreview =
     siteConfig('POST_LIST_PREVIEW', false, NOTION_CONFIG) && post.blockMap
+  const cover = getPostCover(post)
 
   const summaryText = fallbackSummary(post)
 
@@ -45,7 +47,7 @@ export const BlogItem = props => {
         <SmartLink href={post.href} passHref legacyBehavior>
           <div className={`relative overflow-hidden ${featured ? 'rounded-t-3xl' : 'rounded-t-2xl'}`}>
             <LazyImage
-              src={post?.pageCoverThumbnail || siteConfig('BG_IMAGE', '/bg_image.jpg')}
+              src={cover}
               className={`w-full object-cover object-center hover:scale-[1.015] duration-500 ${featured ? 'aspect-[18/8]' : 'aspect-[16/9]'}`}
             />
             {/* subtle gradient overlay for better title contrast / premium feel */}

@@ -1,6 +1,7 @@
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { loadExternalResource } from '@/lib/utils'
+import { getPostCover } from '@/lib/post-cover'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -390,8 +391,8 @@ const getSEOMeta = (props, router, locale) => {
         description: post?.summary,
         type: post?.type,
         slug: post?.slug,
-        image: post?.pageCoverThumbnail || `${siteInfo?.pageCover}`,
-        category: post?.category?.[0],
+        image: getPostCover(post, { absolute: true }) || `${siteInfo?.pageCover}`,
+        category: Array.isArray(post?.category) ? post.category[0] : post?.category,
         tags: post?.tags
       }
   }

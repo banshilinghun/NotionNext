@@ -35,6 +35,7 @@
     "init-dev": "node scripts/dev-tools.js init",
     "clean": "node scripts/dev-tools.js clean",
     "docs": "node scripts/dev-tools.js docs",
+    "publish:md": "node scripts/publish-obsidian-md-to-notion.js",
     "check-updates": "node scripts/dev-tools.js check-updates",
     "setup-hooks": "node scripts/setup-git-hooks.js install",
     "remove-hooks": "node scripts/setup-git-hooks.js remove",

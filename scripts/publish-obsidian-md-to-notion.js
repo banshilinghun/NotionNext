@@ -149,6 +149,75 @@ function inferSummary(frontmatter, markdown) {
   return stripMarkdown(markdown).slice(0, 160)
 }
 
+function isHttpUrl(value = '') {
+  return /^https?:\/\//i.test(String(value).trim())
+}
+
+function parseCategoryMap() {
+  const raw = process.env.OBSIDIAN_CATEGORY_MAP
+  if (!raw) return {}
+  try {
+    const parsed = JSON.parse(raw)
+    return parsed && typeof parsed === 'object' ? parsed : {}
+  } catch (error) {
+    console.warn('[publish-obsidian-md-to-notion] invalid OBSIDIAN_CATEGORY_MAP JSON')
+    return {}
+  }
+}
+
+function resolveCategory(rawCategory, cliCategory) {
+  const input = cliCategory || rawCategory
+  if (!input) return ''
+  const categoryMap = parseCategoryMap()
+  return categoryMap[input] || input
+}
+
+function inferCover(frontmatter, markdown, metadata) {
+  const coverCandidates = [
+    frontmatter.cover,
+    frontmatter.image,
+    frontmatter.featured_image,
+    frontmatter.featuredImage,
+    frontmatter.banner,
+    frontmatter.hero
+  ].filter(Boolean)
+
+  const remoteFrontmatterCover = coverCandidates.find(isHttpUrl)
+  if (remoteFrontmatterCover) {
+    return remoteFrontmatterCover
+  }
+
+  const firstRemoteImage = extractRemoteImageUrls(markdown)[0]
+  if (firstRemoteImage) {
+    return firstRemoteImage
+  }
+
+  const siteLink = process.env.NEXT_PUBLIC_LINK || process.env.SITE_LINK
+  if (!siteLink) {
+    return ''
+  }
+
+  const params = new URLSearchParams()
+  params.set('title', metadata.title)
+  params.set('category', metadata.category)
+  if (metadata.slug) params.set('slug', metadata.slug)
+  if (metadata.summary) params.set('summary', metadata.summary.slice(0, 180))
+  if (metadata.tags?.length) params.set('tags', metadata.tags.slice(0, 5).join(','))
+
+  return `${String(siteLink).replace(/\/$/, '')}/api/cover?${params.toString()}`
+}
+
+function extractRemoteImageUrls(markdown) {
+  const urls = []
+  for (const match of markdown.matchAll(/!\[[^\]]*]\(([^)]+)\)/g)) {
+    const candidate = String(match[1] || '').trim()
+    if (isHttpUrl(candidate)) {
+      urls.push(candidate)
+    }
+  }
+  return [...new Set(urls)]
+}
+
 function chunkText(text, maxLength = 1800) {
   const chunks = []
   let rest = String(text)
@@ -171,6 +240,7 @@ function richText(text, annotations = {}) {
 function markdownToBlocks(markdown) {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n')
   const blocks = []
+  const warnings = []
   let paragraph = []
   let listType = null
   let codeLang = null
@@ -225,6 +295,28 @@ function markdownToBlocks(markdown) {
     if (!line.trim()) {
       flushParagraph()
       listType = null
+      continue
+    }
+
+    const image = line.match(/^!\[([^\]]*)]\(([^)]+)\)$/)
+    if (image) {
+      flushParagraph()
+      listType = null
+      const [, alt = '', source] = image
+      const imageUrl = String(source || '').trim()
+      if (!isHttpUrl(imageUrl)) {
+        warnings.push(`Skipped non-http image source: ${imageUrl}`)
+        continue
+      }
+      blocks.push({
+        object: 'block',
+        type: 'image',
+        image: {
+          type: 'external',
+          external: { url: imageUrl },
+          caption: alt ? richText(alt.trim()) : []
+        }
+      })
       continue
     }
 
@@ -298,7 +390,10 @@ function markdownToBlocks(markdown) {
 
   flushParagraph()
   flushCode()
-  return blocks.slice(0, 100)
+  return {
+    blocks: blocks.slice(0, 100),
+    warnings
+  }
 }
 
 async function notionRequest(pathname, { method = 'GET', body, token }) {
@@ -358,15 +453,52 @@ function buildProperties({ title, slug, date, category, tags, summary, status })
   }
 }
 
-async function createPost({ databaseId, token, metadata, blocks }) {
-  const page = await notionRequest('/pages', {
+async function findExistingPostBySlug({ databaseId, token, slug }) {
+  const response = await notionRequest(`/databases/${databaseId}/query`, {
     method: 'POST',
     token,
     body: {
-      parent: { database_id: databaseId },
-      properties: buildProperties(metadata),
-      children: blocks.slice(0, 100)
+      page_size: 1,
+      filter: {
+        property: 'slug',
+        rich_text: {
+          equals: slug
+        }
+      }
     }
+  })
+
+  return response?.results?.[0] || null
+}
+
+async function createPost({ databaseId, token, metadata, blocks, cover }) {
+  const existing = await findExistingPostBySlug({
+    databaseId,
+    token,
+    slug: metadata.slug
+  })
+
+  if (existing) {
+    throw new Error(`Duplicate slug "${metadata.slug}" already exists: ${existing.url || existing.id}`)
+  }
+
+  const body = {
+    parent: { database_id: databaseId },
+    properties: buildProperties(metadata),
+    children: blocks.slice(0, 100)
+  }
+
+  if (cover && isHttpUrl(cover)) {
+    body.cover = {
+      type: 'external',
+      external: { url: cover }
+    }
+  }
+
+  const page = await notionRequest('/pages', {
+    method: 'POST',
+    token,
+    body
   })
 
   if (blocks.length > 100) {
@@ -415,8 +547,8 @@ async function main() {
   const { data: frontmatter, content } = parseFrontmatter(markdown)
 
   const title = args.title || inferTitle(filePath, frontmatter, content)
-  const category = args.category || frontmatter.category
-  if (!category) {
+  const resolvedCategory = resolveCategory(frontmatter.category, args.category)
+  if (!resolvedCategory) {
     throw new Error('Missing category. Pass --category or set frontmatter category.')
   }
 
@@ -425,23 +557,26 @@ async function main() {
   const tags = inferTags(frontmatter, args.tags)
   const summary = inferSummary(frontmatter, content)
   const slug = args.slug || frontmatter.slug || slugify(title)
-  const blocks = markdownToBlocks(content)
+  const { blocks, warnings } = markdownToBlocks(content)
 
   const metadata = {
     title,
     slug,
     date,
-    category,
+    category: resolvedCategory,
     tags,
     summary,
     status
   }
+  const cover = inferCover(frontmatter, content, metadata)
 
   if (args['dry-run']) {
     console.log(JSON.stringify({
       file: filePath,
       metadata,
+      cover,
       blockCount: blocks.length,
+      warnings,
       previewBlocks: blocks.slice(0, 5)
     }, null, 2))
     return
@@ -460,7 +595,8 @@ async function main() {
     databaseId,
     token,
     metadata,
-    blocks
+    blocks,
+    cover
   })
 
   console.log(JSON.stringify({
@@ -469,8 +605,10 @@ async function main() {
     url: page.url,
     title,
     slug,
-    category,
-    status
+    category: resolvedCategory,
+    status,
+    cover,
+    warnings
   }, null, 2))
 }
 

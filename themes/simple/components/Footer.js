@@ -15,10 +15,10 @@ export default function Footer(props) {
     parseInt(since) < currentYear ? since + '-' + currentYear : currentYear
 
   return (
-    <footer className='relative w-full bg-black px-6 border-t'>
+    <footer className='relative w-full px-6 border-t border-[#e8e0d0] dark:border-gray-800'>
       <DarkModeButton className='text-center pt-4' />
 
-      <div className='text-yellow-300 container mx-auto max-w-4xl py-6 md:flex flex-wrap md:flex-no-wrap md:justify-between items-center text-sm'>
+      <div className='text-gray-500 dark:text-gray-400 container mx-auto max-w-4xl py-6 md:flex flex-wrap md:flex-no-wrap md:justify-between items-center text-sm'>
         <div className='text-center'>
           &copy;{`${copyrightDate}`} {siteConfig('AUTHOR')}. All rights
           reserved.

@@ -49,7 +49,11 @@ const SEO = props => {
   }
   if (meta) {
     url = `${url}/${meta.slug}`
-    image = meta.image || '/bg_image.jpg'
+    image = meta.image || `${LINK}/bg_image.jpg`
+  }
+  // 社交分享要求 og:image 为绝对路径；相对路径统一补上站点域名
+  if (image && image.startsWith('/')) {
+    image = `${LINK}${image}`
   }
   const TITLE = siteConfig('TITLE')
   const title = meta?.title || TITLE
@@ -57,7 +61,6 @@ const SEO = props => {
   const type = meta?.type || 'website'
   const lang = siteConfig('LANG').replace('-', '_') // Facebook OpenGraph 要 zh_CN 這樣的格式才抓得到語言
   const category = meta?.category || KEYWORDS // section 主要是像是 category 這樣的分類，Facebook 用這個來抓連結的分類
-  const favicon = siteConfig('BLOG_FAVICON')
   const BACKGROUND_DARK = siteConfig('BACKGROUND_DARK', '', NOTION_CONFIG)
 
   const SEO_BAIDU_SITE_VERIFICATION = siteConfig(
@@ -101,7 +104,6 @@ const SEO = props => {
   const AUTHOR = siteConfig('AUTHOR')
   return (
     <Head>
-      <link rel='icon' href={favicon} />
       <title>{title}</title>
       <meta name='theme-color' content={BACKGROUND_DARK} />
       <meta
